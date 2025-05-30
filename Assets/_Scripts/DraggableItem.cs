@@ -6,12 +6,18 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 {
     public Image image;
     private InventorySlot currentSlot;
-    
+
     public void SetSlot(InventorySlot slot)
     {
         currentSlot = slot;
         transform.SetParent(slot.transform);
         transform.localPosition = Vector3.zero;
+    }
+
+    public void EquipItem()
+    {
+        Debug.Log("You've equipped the " + gameObject.name);
+        // Implement equipment logic here
     }
 
     public void OnBeginDrag(PointerEventData eventData)

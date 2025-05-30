@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8808074819107756933}
   - component: {fileID: 5270506434908449369}
+  - component: {fileID: -5644887717165860029}
   m_Layer: 0
-  m_Name: Purple Key
+  m_Name: PurpleKeyUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,3 +88,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-5644887717165860029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6065460530465826936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36a2570be6b166c42aef58d92a5e61e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1841436986280660905, guid: a6d549604f90de84da035993e47d24d9, type: 3}

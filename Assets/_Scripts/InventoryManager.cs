@@ -28,15 +28,29 @@ public class InventoryManager : MonoBehaviour
     {
         foreach (var slot in slots)
         {
-            if (slot.transform.childCount == 0) // Find empty slot
+            if (slot.transform.childCount == 0) // Find an empty slot
             {
                 GameObject newItem = Instantiate(itemPrefab, slot.transform); // Create UI item
-                newItem.GetComponent<DraggableItem>().SetSlot(slot);
+                newItem.transform.localPosition = Vector3.zero;
+            
+                DraggableItem draggableItem = newItem.GetComponent<DraggableItem>();
+                if (draggableItem != null)
+                {
+                    draggableItem.SetSlot(slot);
+                }
+                else
+                {
+                    Debug.LogError("DraggableItem component missing on prefab!");
+                }
+
                 return true;
             }
         }
+
+        Debug.LogWarning("Inventory is full! No empty slots available.");
         return false; // Inventory full
     }
+
 
     public void RemoveItem(DraggableItem item)
     {
