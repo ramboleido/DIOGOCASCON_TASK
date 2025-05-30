@@ -1,17 +1,21 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ScriptableObject/Item")]
-public class Item : ScriptableObject
+public class Item : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public enum ItemType { PurpleKey, BlueKey }
+    public ItemType itemType;
 
-    // Update is called once per frame
-    void Update()
+    public void UseItem()
     {
-        
+        if (itemType == ItemType.PurpleKey)
+        {
+            Debug.Log("Purple Key equipped!");
+            
+        }
+        else if (itemType == ItemType.BlueKey)
+        {
+            Debug.Log("Blue Key equipped!");
+            
+        }
     }
 }

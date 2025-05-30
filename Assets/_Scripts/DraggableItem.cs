@@ -4,21 +4,18 @@ using UnityEngine.UI;
 
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    
     public Image image;
-    private ItemData itemData;
-    [HideInInspector] public Transform parentAfterDrag;
+    private InventorySlot currentSlot;
     
-    
-    public void AssignData(ItemData data)
+    public void SetSlot(InventorySlot slot)
     {
-        itemData = data;
-        image.sprite = data.icon; // Set the item's icon
+        currentSlot = slot;
+        transform.SetParent(slot.transform);
+        transform.localPosition = Vector3.zero;
     }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("Begin drag");
-        parentAfterDrag = transform.parent;
         transform.SetParent(transform.root);
         transform.SetAsLastSibling();
         image.raycastTarget = false;
@@ -26,14 +23,12 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log("Dragging");
         transform.position = Input.mousePosition;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("End drag");
-        transform.SetParent(parentAfterDrag);
         image.raycastTarget = true;
+        SetSlot(currentSlot);
     }
 }

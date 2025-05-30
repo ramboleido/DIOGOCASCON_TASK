@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 public class InventoryManager : MonoBehaviour
 {
-    [SerializeField] private GameObject inventoryPanel;
+    [SerializeField] private GameObject inventoryPanel; // UI panel reference
     [SerializeField] private List<InventorySlot> slots;
-    [SerializeField] private DraggableItem itemPrefab; // Single prefab for all items
     private bool isOpen = false;
 
     private void Update()
@@ -20,17 +19,19 @@ public class InventoryManager : MonoBehaviour
     {
         isOpen = !isOpen;
         inventoryPanel.SetActive(isOpen);
+
+        // **Pause the game & timer when inventory opens**
+        Time.timeScale = isOpen ? 0 : 1; 
     }
 
-    public bool AddItem(ItemData itemData)
+    public bool AddItem(GameObject itemPrefab)
     {
         foreach (var slot in slots)
         {
-            if (slot.transform.childCount == 0) // Find an empty slot
+            if (slot.transform.childCount == 0) // Find empty slot
             {
-                DraggableItem newItem = Instantiate(itemPrefab, slot.transform);
-                newItem.AssignData(itemData);
-                newItem.transform.localPosition = Vector3.zero;
+                GameObject newItem = Instantiate(itemPrefab, slot.transform); // Create UI item
+                newItem.GetComponent<DraggableItem>().SetSlot(slot);
                 return true;
             }
         }
@@ -39,13 +40,29 @@ public class InventoryManager : MonoBehaviour
 
     public void RemoveItem(DraggableItem item)
     {
+        Destroy(item.gameObject);
+    }
+
+    public void DropItem(DraggableItem item)
+    {
         foreach (var slot in slots)
         {
-            if (slot.transform.GetChild(0) == item.transform)
+            if (slot.transform.childCount == 0)
             {
-                Destroy(item.gameObject); // Remove the item from inventory
+                SpawnWorldItem(item.gameObject);
+                Destroy(item.gameObject); // Remove from inventory UI
                 return;
             }
+        }
+    }
+
+    private void SpawnWorldItem(GameObject itemPrefab)
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            Vector2 dropPosition = (Vector2)player.transform.position + new Vector2(1, 0); // Drop slightly ahead
+            Instantiate(itemPrefab, dropPosition, Quaternion.identity);
         }
     }
 }
