@@ -6,8 +6,15 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 {
     
     public Image image;
+    private ItemData itemData;
     [HideInInspector] public Transform parentAfterDrag;
     
+    
+    public void AssignData(ItemData data)
+    {
+        itemData = data;
+        image.sprite = data.icon; // Set the item's icon
+    }
     public void OnBeginDrag(PointerEventData eventData)
     {
         Debug.Log("Begin drag");

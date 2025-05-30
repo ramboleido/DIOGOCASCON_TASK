@@ -5,6 +5,7 @@ public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private List<InventorySlot> slots;
+    [SerializeField] private DraggableItem itemPrefab; // Single prefab for all items
     private bool isOpen = false;
 
     private void Update()
@@ -21,21 +22,20 @@ public class InventoryManager : MonoBehaviour
         inventoryPanel.SetActive(isOpen);
     }
 
-    public bool AddItem(DraggableItem item)
+    public bool AddItem(ItemData itemData)
     {
         foreach (var slot in slots)
         {
-            if (slot.transform.childCount == 0) // Empty slot available
+            if (slot.transform.childCount == 0) // Find an empty slot
             {
-                item.transform.SetParent(slot.transform);
-                item.transform.localPosition = Vector3.zero;
-                return true; // Successfully added the item
+                DraggableItem newItem = Instantiate(itemPrefab, slot.transform);
+                newItem.AssignData(itemData);
+                newItem.transform.localPosition = Vector3.zero;
+                return true;
             }
         }
-        Debug.Log("Your inventory is full!"); 
-        return false; // Inventory is full
+        return false; // Inventory full
     }
-
 
     public void RemoveItem(DraggableItem item)
     {
@@ -43,7 +43,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (slot.transform.GetChild(0) == item.transform)
             {
-                item.transform.SetParent(null);
+                Destroy(item.gameObject); // Remove the item from inventory
                 return;
             }
         }
